@@ -1,6 +1,6 @@
-# Live Vision E-Commerce App
+# Live Vision E-Commerce App (React Native)
 
-A revolutionary Flutter application that uses AI-powered computer vision to enable seamless shopping experiences. Users can browse social media or websites, and the app's AI automatically detects products and adds them to their shopping cart.
+A revolutionary React Native application that uses AI-powered computer vision to enable seamless shopping experiences. Users can browse social media or websites, and the app's AI automatically detects products and adds them to their shopping cart.
 
 ## 🚀 Features
 
@@ -14,11 +14,13 @@ A revolutionary Flutter application that uses AI-powered computer vision to enab
 ## 🏗️ Architecture
 
 ### Frontend (Mobile App)
-- **Flutter**: Cross-platform mobile app (iOS & Android)
-- **LiveKit Client**: Screen sharing and real-time communication
-- **WebView**: Chromium-based browser for social media
+- **React Native 0.73**: Cross-platform mobile framework (iOS & Android)
+- **TypeScript**: Type-safe JavaScript
+- **LiveKit React Native SDK**: Screen sharing and real-time communication
+- **React Native WebView**: In-app browser
 - **AWS Amplify**: Authentication and API integration
-- **Stripe SDK**: Payment processing
+- **Stripe React Native SDK**: Payment processing
+- **Apollo Client**: GraphQL client for Shopify
 
 ### Backend (AWS)
 - **AWS Cognito**: User authentication and authorization
@@ -26,8 +28,8 @@ A revolutionary Flutter application that uses AI-powered computer vision to enab
 - **AWS API Gateway**: RESTful API endpoints
 
 ### AI Vision Agent
-- **LiveKit Agents**: Python agent for video analysis
-- **Multimodal LLM**: GPT-4 Vision, Claude, or Gemini for product detection
+- **Python**: LiveKit agent for video stream processing
+- **Multimodal LLM**: GPT-4 Vision, Claude, or Gemini
 - **Real-time Processing**: Continuous frame analysis
 
 ### E-Commerce
@@ -36,325 +38,108 @@ A revolutionary Flutter application that uses AI-powered computer vision to enab
 
 ## 📋 Prerequisites
 
-Before you begin, ensure you have:
-
 1. **Development Environment**
-   - Flutter SDK (3.0 or higher)
-   - Dart SDK
+   - Node.js 18+
+   - React Native CLI
    - Android Studio / Xcode
-   - Node.js (16 or higher)
-   - Python (3.9 or higher)
+   - Python 3.9+ (for vision agent)
 
 2. **Cloud Services**
-   - AWS Account
-   - AWS Amplify CLI installed (`npm install -g @aws-amplify/cli`)
-   - LiveKit Cloud account or self-hosted LiveKit server
-   - Shopify store with Storefront API access
+   - AWS Account with Amplify CLI
+   - LiveKit Cloud account
+   - Shopify store
    - Stripe account
 
 3. **API Keys**
-   - LiveKit API key and secret
-   - Stripe publishable and secret keys
-   - Shopify storefront access token
-   - OpenAI API key (or alternative LLM provider)
+   - LiveKit credentials
+   - Stripe keys
+   - Shopify storefront token
+   - OpenAI API key
 
-## 🛠️ Installation & Setup
-
-### Step 1: Clone and Install Dependencies
+## 🛠️ Quick Start
 
 ```bash
-# Navigate to the project directory
-cd live_vision_ecommerce
-
-# Install Flutter dependencies
-flutter pub get
-
-# Install Lambda dependencies
-cd amplify/backend/function/stripePaymentIntent/src
+# Install dependencies
 npm install
-cd ../../../../../
+cd ios && pod install && cd ..  # iOS only
 
-# Install Python agent dependencies
-cd livekit-vision-agent
-pip install -r requirements.txt
-cd ..
-```
-
-### Step 2: Configure AWS Amplify
-
-```bash
-# Initialize Amplify (if not already done)
-amplify init
-
-# Add authentication
-amplify add auth
-# Choose: Default configuration, Email/Username sign-in
-
-# Add REST APIs
-amplify add api
-# Create two APIs:
-# 1. LiveKitTokenApi with path /token
-# 2. StripePaymentApi with path /create-intent
-
-# Deploy to AWS
-amplify push
-```
-
-After `amplify push`, the CLI will generate `lib/amplifyconfiguration.dart` automatically.
-
-### Step 3: Configure Environment Variables
-
-#### Flutter App Configuration
-
-Edit the following files with your credentials:
-
-**lib/main.dart**
-```dart
-const String stripePublishableKey = 'pk_test_YOUR_ACTUAL_KEY';
-```
-
-**lib/services/shopify_service.dart**
-```dart
-const String _shopifyDomain = 'your-store.myshopify.com';
-const String _storefrontAccessToken = 'YOUR_ACTUAL_TOKEN';
-```
-
-**lib/screens/vision_browser_screen.dart**
-```dart
-const String liveKitUrl = 'wss://your-livekit-server.livekit.cloud';
-```
-
-#### AWS Lambda Configuration
-
-Set environment variables in AWS Lambda Console:
-
-**livekitTokenGenerator Lambda:**
-- `LIVEKIT_API_KEY`: Your LiveKit API key
-- `LIVEKIT_API_SECRET`: Your LiveKit API secret
-- `LIVEKIT_ROOM_NAME`: social-vision-room
-- `TOKEN_TTL_HOURS`: 24
-
-**stripePaymentIntent Lambda:**
-- `STRIPE_SECRET_KEY`: Your Stripe secret key
-- `MIN_AMOUNT`: 50 (minimum cents)
-- `MAX_AMOUNT`: 1000000 (maximum cents)
-
-#### LiveKit Vision Agent
-
-```bash
-cd livekit-vision-agent
-
-# Copy example environment file
+# Configure environment
 cp .env.example .env
-
 # Edit .env with your credentials
-nano .env
+
+# Start vision agent
+cd livekit-vision-agent && python agent.py start
+
+# Run app
+npm run ios     # iOS
+npm run android # Android
 ```
 
-Set the following in `.env`:
-```env
-LIVEKIT_URL=wss://your-server.livekit.cloud
-LIVEKIT_API_KEY=your-api-key
-LIVEKIT_API_SECRET=your-api-secret
-OPENAI_API_KEY=sk-your-openai-key
-```
-
-### Step 4: Run the Application
-
-#### Start the Vision Agent
-
-```bash
-cd livekit-vision-agent
-python agent.py start
-```
-
-#### Run the Flutter App
-
-```bash
-# For iOS
-flutter run -d ios
-
-# For Android
-flutter run -d android
-
-# For development with hot reload
-flutter run --debug
-```
-
-## 📱 Usage
-
-1. **Sign Up / Sign In**: Create an account using the AWS Amplify authentication
-2. **Browse**: Use the built-in browser to visit social media or shopping sites
-3. **Start Vision**: Tap the "START VISION" button to enable AI analysis
-4. **Shop**: The AI will automatically detect products and add them to your cart
-5. **Checkout**: Review your cart and complete payment securely with Stripe
-
-## 🔒 Security
-
-- **Authentication**: AWS Cognito provides secure user authentication
-- **API Security**: All API endpoints are protected with Cognito authorizers
-- **Payment Security**: Stripe handles all payment data (PCI compliant)
-- **Environment Variables**: Sensitive keys are stored in environment variables
-- **HTTPS/WSS**: All communication uses encrypted protocols
-
-## 🧪 Testing
-
-### Test the Flutter App
-
-```bash
-flutter test
-```
-
-### Test Lambda Functions Locally
-
-Use AWS SAM CLI or Amplify mock:
-
-```bash
-amplify mock api
-```
-
-### Test the Vision Agent
-
-```bash
-cd livekit-vision-agent
-python -m pytest tests/
-```
+See [QUICKSTART.md](QUICKSTART.md) for detailed setup instructions.
 
 ## 📦 Project Structure
 
 ```
 live_vision_ecommerce/
-├── lib/
-│   ├── main.dart                          # App entry point
-│   ├── amplifyconfiguration.dart          # Amplify config (auto-generated)
-│   ├── services/
-│   │   ├── api_service.dart               # API client (LiveKit, Stripe)
-│   │   └── shopify_service.dart           # Shopify GraphQL client
-│   └── screens/
-│       ├── vision_browser_screen.dart     # Main browsing + vision screen
-│       └── stripe_checkout_screen.dart    # Checkout screen
-├── amplify/
-│   └── backend/
-│       └── function/
-│           ├── livekitTokenGenerator/     # LiveKit token Lambda
-│           └── stripePaymentIntent/       # Stripe payment Lambda
-├── livekit-vision-agent/
-│   ├── agent.py                           # Python vision agent
-│   ├── requirements.txt                   # Python dependencies
-│   └── .env.example                       # Environment template
-├── pubspec.yaml                           # Flutter dependencies
-└── README.md                              # This file
+├── src/
+│   ├── screens/              # React Native screens
+│   ├── services/             # API and business logic
+│   └── amplifyconfiguration.ts
+├── amplify/backend/function/  # Lambda functions
+├── livekit-vision-agent/     # Python AI agent
+├── App.tsx                   # Main app component
+└── package.json
 ```
 
-## 🚢 Deployment
+## 📚 Documentation
 
-### Deploy Backend (AWS)
+- **[QUICKSTART.md](QUICKSTART.md)**: Get running in 30 minutes
+- **[CONFIGURATION_GUIDE.md](CONFIGURATION_GUIDE.md)**: Detailed configuration
+- **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)**: Production deployment
+- **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)**: Architecture details
+
+## 🧪 Development
 
 ```bash
-amplify push --environment production
+# Start Metro bundler
+npm start
+
+# Run tests
+npm test
+
+# Clear cache
+npm start -- --reset-cache
 ```
 
-### Deploy Vision Agent
-
-The vision agent should be deployed to a server with GPU access for optimal performance:
-
-**Options:**
-1. **AWS ECS/Fargate**: Container-based deployment
-2. **AWS EC2**: VM-based deployment with GPU
-3. **LiveKit Cloud Agents**: Managed agent hosting
-4. **Docker**: Containerized deployment
-
-Example Docker deployment:
+## 🚢 Production Build
 
 ```bash
-cd livekit-vision-agent
-docker build -t vision-agent .
-docker run -d --env-file .env vision-agent
-```
+# iOS
+npx react-native run-ios --configuration Release
 
-### Deploy Mobile App
-
-**iOS:**
-```bash
-flutter build ipa
-# Upload to App Store Connect
-```
-
-**Android:**
-```bash
-flutter build appbundle
-# Upload to Google Play Console
+# Android
+cd android && ./gradlew assembleRelease
 ```
 
 ## 🐛 Troubleshooting
 
-### Common Issues
+- **Metro issues**: `npm start -- --reset-cache`
+- **iOS build**: `cd ios && pod install`
+- **Android build**: `cd android && ./gradlew clean`
+- **LiveKit**: Check wss:// URL format and API keys
 
-**1. Amplify Configuration Not Found**
-```bash
-amplify pull
-```
+## 🔒 Security
 
-**2. LiveKit Connection Fails**
-- Check `LIVEKIT_URL` is correct (wss:// protocol)
-- Verify API keys are set in Lambda environment variables
-- Check network firewall settings
-
-**3. Stripe Payment Fails**
-- Verify `STRIPE_SECRET_KEY` is set correctly
-- Check Stripe dashboard for error logs
-- Ensure test mode keys are used for development
-
-**4. Shopify GraphQL Errors**
-- Verify storefront access token has correct permissions
-- Check API version compatibility (2024-07)
-- Review Shopify API rate limits
-
-**5. Vision Agent Not Detecting Products**
-- Verify OpenAI API key is valid
-- Check agent logs for errors
-- Ensure frame quality is sufficient
-- Review LLM prompt configuration
-
-## 📚 Additional Resources
-
-- [Flutter Documentation](https://flutter.dev/docs)
-- [AWS Amplify Documentation](https://docs.amplify.aws/)
-- [LiveKit Documentation](https://docs.livekit.io/)
-- [Stripe Documentation](https://stripe.com/docs)
-- [Shopify Storefront API](https://shopify.dev/api/storefront)
-
-## 🤝 Contributing
-
-Contributions are welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+- AWS Cognito authentication
+- API Gateway authorization
+- Stripe PCI compliance
+- Environment variable secrets
+- Encrypted communication
 
 ## 📄 License
 
-This project is licensed under the MIT License - see LICENSE file for details.
-
-## ⚠️ Disclaimer
-
-This is a demonstration project. For production use:
-- Implement proper error handling
-- Add comprehensive testing
-- Set up monitoring and logging
-- Review security best practices
-- Comply with data privacy regulations (GDPR, CCPA, etc.)
-- Obtain necessary permissions for screen capture
-
-## 📞 Support
-
-For questions or issues:
-- Open an issue on GitHub
-- Check the troubleshooting section
-- Review API documentation
-- Contact the development team
+MIT License
 
 ---
 
-Built with ❤️ using Flutter, AWS, LiveKit, and AI
+**Tech Stack**: React Native, TypeScript, AWS, LiveKit, Shopify, Stripe, OpenAI
