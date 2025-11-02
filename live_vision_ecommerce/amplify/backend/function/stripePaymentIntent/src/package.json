@@ -1,0 +1,21 @@
+{
+  "name": "stripe-payment-intent",
+  "version": "1.0.0",
+  "description": "Lambda function for creating Stripe payment intents",
+  "main": "index.js",
+  "dependencies": {
+    "stripe": "^14.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "stripe",
+    "payment",
+    "lambda",
+    "aws"
+  ],
+  "author": "",
+  "license": "MIT"
+}

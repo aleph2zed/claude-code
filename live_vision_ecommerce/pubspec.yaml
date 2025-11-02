@@ -1,0 +1,44 @@
+name: live_vision_ecommerce
+description: A Live Vision E-Commerce App with Flutter, LiveKit, AWS Amplify, Shopify, and Stripe
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # AWS Amplify Core
+  amplify_flutter: ^2.0.0
+  amplify_auth_cognito: ^2.0.0
+  amplify_authenticator: ^2.0.0
+  amplify_api: ^2.0.0
+
+  # LiveKit & WebRTC
+  livekit_client: ^2.1.0
+
+  # Chromium-based WebView
+  webview_flutter: ^4.4.2
+
+  # Shopify GraphQL
+  graphql_flutter: ^5.1.2
+
+  # Stripe Payments
+  flutter_stripe: ^10.1.1
+
+  # HTTP client
+  http: ^1.1.0
+
+  # Cupertino Icons
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true

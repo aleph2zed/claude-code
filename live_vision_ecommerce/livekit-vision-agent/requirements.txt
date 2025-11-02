@@ -1,0 +1,26 @@
+# LiveKit Vision Agent Requirements
+
+# LiveKit SDK
+livekit==0.11.0
+livekit-agents==0.8.0
+
+# Image processing
+Pillow>=10.0.0
+
+# Multimodal LLM - Choose one or more based on your needs:
+
+# OpenAI (GPT-4 Vision)
+openai>=1.0.0
+
+# Anthropic (Claude with vision)
+# anthropic>=0.18.0
+
+# Google (Gemini)
+# google-generativeai>=0.3.0
+
+# AWS Bedrock (for Claude, Titan, etc.)
+# boto3>=1.34.0
+
+# Utility libraries
+python-dotenv>=1.0.0
+aiohttp>=3.9.0
