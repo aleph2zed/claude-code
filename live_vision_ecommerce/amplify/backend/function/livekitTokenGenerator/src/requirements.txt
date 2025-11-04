@@ -1,2 +1,0 @@
-livekit==0.11.0
-protobuf>=3.20.0
